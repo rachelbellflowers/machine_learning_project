@@ -1,0 +1,190 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Student Performance},
+  pdfauthor={Rachel Bellflowers},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+
+\title{Student Performance}
+\author{Rachel Bellflowers}
+\date{Last compiled: Aug 21, 2020}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\hypertarget{dataset-description}{%
+\subsection*{Dataset Description}\label{dataset-description}}
+\addcontentsline{toc}{subsection}{Dataset Description}
+
+This dataset examines how different factors affected 382 students' final grades for a math course. I used only the following variables from the dataset:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Dependent Variable}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{G3}: final grades for the class, ranging from 0-20
+  \end{itemize}
+\item
+  \textbf{Independent Variables}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \texttt{school}: whether they attended Gabriel Pereira or Mousinho da Silveira
+  \item
+    \texttt{sex}: female or male
+  \item
+    \texttt{age}: ranged from 15-22
+  \item
+    \texttt{address}: whether they lived in a rural or urban area
+  \item
+    \texttt{famsize}: whether their family had less than or equal to 3 members or greater than 3
+  \item
+    \texttt{Pstatus}: parents separated or living together
+  \item
+    \texttt{nursery}: whether they attended nursery school
+  \item
+    \texttt{internet}: if they had Internet access at home
+  \item
+    \texttt{guardian}: if they are taken care of by a mother, father, both, or other
+  \item
+    \texttt{studytime}: How many hours they studied a week
+  \item
+    \texttt{famsup}: if their family supported their education
+  \item
+    \texttt{paid}: if they were taking extra paid classes within the course subject (math)
+  \item
+    \texttt{activities}: if they participated in extracurricular activities
+  \item
+    \texttt{higher}: whether they intend to seek higher education
+  \item
+    \texttt{romantic}: in a romantic relationship
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{linear-model}{%
+\subsection*{Linear Model}\label{linear-model}}
+\addcontentsline{toc}{subsection}{Linear Model}
+
+First, I created a simple linear model using a training/test split of 50/50. Given that most the curve is centered on ``0'' for the residuals, the linear model appears to be a good predictor for final course grades.
+
+\begin{center}\includegraphics{WriteUp_files/figure-latex/lin-1} \end{center}
+
+The plot in Figure \ref{fig:lin} was created with \texttt{ggplot2} (Wickham et al. 2020).
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{random-forest}{%
+\subsection*{Random Forest}\label{random-forest}}
+\addcontentsline{toc}{subsection}{Random Forest}
+
+I had doubts concerning the results of my initial linear model given that I used a 50/50 split. Therefore, I decided to run a random forest model. According to the graph, the less randomly selected predictors, the lower the RMSE. As the grading scale ranged from 1-20, a RMSE ranging from around 4.4 to around 4.7 suggests that this model does not serve as a good predictor of final course grades.
+
+\begin{center}\includegraphics{WriteUp_files/figure-latex/tree-1} \end{center}
+
+The plot in Figure \ref{fig:tree} was created with base R (R Core Team 2018).
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{classification-model}{%
+\subsection*{Classification Model}\label{classification-model}}
+\addcontentsline{toc}{subsection}{Classification Model}
+
+To fit a classification model, I divided up grades into two categories: grades ranging from 1-10 and grades ranging from 11-20. I then used \texttt{method\ =\ glm} in the \texttt{train()} function. The green line, which has the highest lambda value, on average has a smaller ROC value than either the blue or pink lines.
+
+\begin{center}\includegraphics{WriteUp_files/figure-latex/class-1} \end{center}
+
+The plot in Figure \ref{fig:class} was created with base R (R Core Team 2018).
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\hypertarget{conclusion}{%
+\subsection*{Conclusion}\label{conclusion}}
+\addcontentsline{toc}{subsection}{Conclusion}
+
+Although the first graph appeared to be the best out of the three, I believe that none of these models were good predictors of the outcome variable. The package suggested for creating ROC curves in the Datacamp exercise was not compatible with the version of RStudio Server we are using, so I am not sure if my last graph was calculated correctly. Additionally, I believe creating a 50/50 split for the first graph perhaps resulted in overfitting. In the future, a larger sample size with a greater age range would probably help with finding a greater effect.
+
+\hypertarget{references}{%
+\section*{References}\label{references}}
+\addcontentsline{toc}{section}{References}
+
+\hypertarget{refs}{}
+\leavevmode\hypertarget{ref-R-base}{}%
+R Core Team. 2018. \emph{R: A Language and Environment for Statistical Computing}. Vienna, Austria: R Foundation for Statistical Computing. \url{https://www.R-project.org/}.
+
+\leavevmode\hypertarget{ref-R-ggplot2}{}%
+Wickham, Hadley, Winston Chang, Lionel Henry, Thomas Lin Pedersen, Kohske Takahashi, Claus Wilke, Kara Woo, Hiroaki Yutani, and Dewey Dunnington. 2020. \emph{Ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics}. \url{https://CRAN.R-project.org/package=ggplot2}.
+
+\end{document}

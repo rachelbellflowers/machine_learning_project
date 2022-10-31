@@ -1,5 +1,5 @@
 ---
-title: "Student Performance"
+title: "Student Performance in Two Highschool Math Courses"
 author: "Rachel Bellflowers"
 date: 'Last compiled: `r format(Sys.time(), "%b %d, %Y")`'
 output: 
